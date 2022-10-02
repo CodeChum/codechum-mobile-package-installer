@@ -44,12 +44,16 @@ app.post("/install-jdk", (req, res) => {
  *
  */
 app.get("/check-csharp", (req, res) => {
-  const result = execSync("which mono");
-  if (result !== "") {
-    return res.json({ status: "installed" });
-  }
+  try {
+    const result = execSync("which mono");
+    if (result !== "") {
+      return res.json({ status: "installed" });
+    }
 
-  return res.json({ status: "not-installed" });
+    return res.json({ status: "not-installed" });
+  } catch (e) {
+    return res.json({ status: "not-installed" });
+  }
 });
 app.post("/install-csharp", (req, res) => {
   execSync("apt -o DPkg::Options::=--force-confdef install mono -y");
