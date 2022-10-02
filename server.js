@@ -13,12 +13,16 @@ app.get("/", (req, res) => {
  *
  */
 app.get("/check-clang", (req, res) => {
-  const result = execSync("which clang");
-  if (result !== "") {
-    return res.json({ status: "installed" });
-  }
+  try {
+    const result = execSync("which clang");
+    if (result !== "") {
+      return res.json({ status: "installed" });
+    }
 
-  return res.json({ status: "not-installed" });
+    return res.json({ status: "not-installed" });
+  } catch (e) {
+    return res.json({ status: "not-installed" });
+  }
 });
 
 app.post("/install-clang", (req, res) => {
@@ -32,6 +36,19 @@ app.post("/install-clang", (req, res) => {
  * Java
  *
  */
+ app.get("/check-java", (req, res) => {
+  try {
+    const result = execSync("which java");
+    if (result !== "") {
+      return res.json({ status: "installed" });
+    }
+
+    return res.json({ status: "not-installed" });
+  } catch (e) {
+    return res.json({ status: "not-installed" });
+  }
+});
+
 app.post("/install-jdk", (req, res) => {
   execSync("apt -o DPkg::Options::=--force-confdef install openjdk-17 -y");
   return res.json({ status: "finished" });
