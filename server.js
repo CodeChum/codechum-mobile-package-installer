@@ -9,29 +9,6 @@ app.get("/", (req, res) => {
 
 /**
  *
- * C
- *
- */
-app.get("/check-clang", (req, res) => {
-  try {
-    const result = execSync("which clang");
-    if (result !== "") {
-      return res.json({ status: "installed" });
-    }
-
-    return res.json({ status: "not-installed" });
-  } catch (e) {
-    return res.json({ status: "not-installed" });
-  }
-});
-
-app.post("/install-clang", (req, res) => {
-  execSync("apt -o DPkg::Options::=--force-confdef install clang -y");
-  return res.json({ status: "finished" });
-});
-
-/**
- *
  *
  * Java
  *
@@ -49,7 +26,7 @@ app.post("/install-clang", (req, res) => {
   }
 });
 
-app.post("/install-jdk", (req, res) => {
+app.post("/install-java", (req, res) => {
   execSync("apt -o DPkg::Options::=--force-confdef install openjdk-17 -y");
   return res.json({ status: "finished" });
 });
